@@ -31,6 +31,4 @@ public class ClienteTest {
 		cliente.agregarTiquete(tiquete);
 		assertTrue(cliente.getTiquetes().contains(tiquete));
 	}
-	
-	
 }
