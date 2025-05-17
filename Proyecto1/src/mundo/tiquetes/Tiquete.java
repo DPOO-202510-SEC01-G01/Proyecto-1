@@ -1,18 +1,18 @@
 package tiquetes;
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class Tiquete {
-    private Date fechaCompra;
+    private LocalDate fechaCompra;
     private boolean usado;
     private int precio;
 
-    public Tiquete(Date fechaCompra, int precio) {
-        this.fechaCompra = fechaCompra;
+    public Tiquete(String fechaCompra, int precio) {
+        this.fechaCompra = LocalDate.parse(fechaCompra);
         this.precio = precio;
         this.usado = false;
     }
 
-    public Date getFechaCompra() {
+    public LocalDate getFechaCompra() {
         return fechaCompra;
     }
 
