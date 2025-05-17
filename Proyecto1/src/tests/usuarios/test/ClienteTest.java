@@ -22,6 +22,15 @@ public class ClienteTest {
 		assertTrue(cliente.getTiquetes().contains(tiquete));
 	}
 	@Test
+	void comprarTiqueteTest() {
+		cliente.comprarTiquete(tiquete);
+		assertTrue(cliente.getTiquetes().contains(tiquete));
+	}
+	@Test
+	void getTiquetesTest() {
+		cliente.agregarTiquete(tiquete);
+		assertTrue(cliente.getTiquetes().contains(tiquete));
+	}
 	
 	
 }
