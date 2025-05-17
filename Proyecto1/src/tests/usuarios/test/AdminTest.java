@@ -2,7 +2,6 @@ package usuarios.test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 
@@ -25,9 +24,7 @@ public class AdminTest{
 		admin = new Admin("Administrador","12345","admin@prueba", parque);
 		ArrayList<String> calificaciones = new ArrayList<String>(); 
 		empleado = new Empleado("Empleado","12345","empleado@prueba","Cocina");
-		LocalTime inicio = LocalTime.parse("07:00:00");
-		LocalTime fin = LocalTime.parse("12:00:00");
-		turno = new Turno(inicio, fin);		
+		turno = new Turno("07:00:00", "12:00:00");		
 	}
 	@Test
 	void agregarTurnoTest() {
