@@ -31,8 +31,9 @@ public class Admin extends Usuario {
         empleado.agregarTurno(turno);
     }
 
-     public void modificarInformacionEmpleado(Empleado empleado /*, ... nuevos datos ...*/) {
-         System.out.println("Admin " + empleado.getUserName() + " modificando datos de " + empleado.getUserName());
+    public void cambiarRolEmpleado(Empleado empleado, String rol) {
+         System.out.println("Admin " + empleado.getUserName() + " modificando rol de " + empleado.getUserName());
+         empleado.setRol(rol);
     }
 
     public String toString() {
