@@ -1,6 +1,6 @@
 package tiquetes;
 
-import java.time.LocalDate;
+
 
 public class General extends Tiquete {
     private String tipo; // Básico, Familiar, Oro, Diamante
@@ -19,6 +19,8 @@ public class General extends Tiquete {
     public int getNivel() {
     	return nivel;
     }
+    
+    
 
     @Override
     public String toString() {
