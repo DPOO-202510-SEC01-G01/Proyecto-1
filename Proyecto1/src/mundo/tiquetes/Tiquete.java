@@ -6,8 +6,8 @@ public abstract class Tiquete {
     private boolean usado;
     private int precio;
 
-    public Tiquete(String fechaCompra, int precio) {
-        this.fechaCompra = LocalDate.parse(fechaCompra);
+    public Tiquete(LocalDate fechaCompra, int precio) {
+        this.fechaCompra = fechaCompra;
         this.precio = precio;
         this.usado = false;
     }
