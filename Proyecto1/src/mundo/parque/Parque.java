@@ -26,7 +26,6 @@ public class Parque {
 		this.tiquetes = new HashMap<>();
 	}
 
-	
 	public void agregarAtraccion(Atraccion atraccion) {
         this.atracciones.put( atraccion.getNombre( ), atraccion );
     }
