@@ -1,6 +1,7 @@
 package atracciones;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import usuario.Empleado;
 
@@ -16,19 +17,35 @@ public class AtraccionMecanica extends Atraccion {
 	
 	
 
-	public AtraccionMecanica(String tipo, int capacidadMax, int empleadosMin, String ubicacion,
-			String nivelEsclusividad, List<Empleado> empleadosAsignados, boolean esDeTemporada,
-			LocalDate fechaInicioTemporada, LocalDate fechaFinTemporada, String condicionClimatica, double alturaMin,
-			double alturaMax, double alturaMinima, int pesoMax, String nivelRiesgo, List<String> restricciones) {
-		super(tipo, capacidadMax, empleadosMin, ubicacion, nivelEsclusividad, empleadosAsignados, esDeTemporada,
-				fechaInicioTemporada, fechaFinTemporada, condicionClimatica);
-		this.alturaMin = alturaMin;
-		this.alturaMax = alturaMax;
-		this.alturaMinima = alturaMinima;
-		this.pesoMax = pesoMax;
-		this.nivelRiesgo = nivelRiesgo;
-		this.restricciones = restricciones;
-	}
+	// Constructor para atracciones NO de temporada
+    public AtraccionMecanica(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
+                             int nivelExclusividad, String condicionClimatica,
+                             double alturaMin, double alturaMax, double alturaMinima,
+                             int pesoMax, String nivelRiesgo, List<String> restricciones) {
+        super(nombre, capacidadMax, empleadosMin, ubicacion, nivelExclusividad, condicionClimatica);
+        this.alturaMin = alturaMin;
+        this.alturaMax = alturaMax;
+        this.alturaMinima = alturaMinima;
+        this.pesoMax = pesoMax;
+        this.nivelRiesgo = nivelRiesgo;
+        this.restricciones = restricciones;
+    }
+
+    // Constructor para atracciones DE temporada
+    public AtraccionMecanica(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
+                             int nivelExclusividad, Month mesInicio, Month mesFin,
+                             String condicionClimatica, double alturaMin, double alturaMax,
+                             double alturaMinima, int pesoMax, String nivelRiesgo,
+                             List<String> restricciones) {
+        super(nombre, capacidadMax, empleadosMin, ubicacion, nivelExclusividad,
+              mesInicio, mesFin, condicionClimatica);
+        this.alturaMin = alturaMin;
+        this.alturaMax = alturaMax;
+        this.alturaMinima = alturaMinima;
+        this.pesoMax = pesoMax;
+        this.nivelRiesgo = nivelRiesgo;
+        this.restricciones = restricciones;
+    }
 	public double getAlturaMin() {
 		return alturaMin;
 	}

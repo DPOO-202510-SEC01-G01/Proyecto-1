@@ -1,6 +1,9 @@
 package atracciones;
+import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.time.Month;
+
 import usuario.Empleado;
 import lugares.LugarTrabajo;
 
@@ -10,36 +13,50 @@ public abstract class Atraccion implements LugarTrabajo {
     protected  int capacidadMax;
     protected  int empleadosMin;
     protected  String ubicacion;
-    protected  String nivelEsclusividad;
+    protected  int nivelExclusividad; // 0 = Basico, 1=familiar, 2=oro, 3=,diamante
     protected List<Empleado> empleadosAsignados;
     protected  boolean esDeTemporada;
-    protected  LocalDate fechaInicioTemporada; 
-    protected  LocalDate fechaFinTemporada;   
+    protected  Month mesInicioTemporada; 
+    protected  Month mesFinTemporada;   
     protected String CondicionClimatica;
     
     
  
-	public Atraccion(String nombre, int capacidadMax, int empleadosMin, String ubicacion, String nivelEsclusividad,
-			List<Empleado> empleadosAsignados, boolean esDeTemporada, LocalDate fechaInicioTemporada,
-			LocalDate fechaFinTemporada, String condicionClimatica) {
-		super();
-		this.nombre = nombre;
-		this.capacidadMax = capacidadMax;
-		this.empleadosMin = empleadosMin;
-		this.ubicacion = ubicacion;
-		this.nivelEsclusividad = nivelEsclusividad;
-		this.empleadosAsignados = empleadosAsignados;
-		this.esDeTemporada = esDeTemporada;
-		this.fechaInicioTemporada = fechaInicioTemporada;
-		this.fechaFinTemporada = fechaFinTemporada;
-		CondicionClimatica = condicionClimatica;
-	}
+    // Constructor para atracciones NO de temporada
+    public Atraccion(String nombre, int capacidadMax, int empleadosMin, String ubicacion, int nivelExclusividad,
+                     String condicionClimatica) {
+        this.nombre = nombre;
+        this.capacidadMax = capacidadMax;
+        this.empleadosMin = empleadosMin;
+        this.ubicacion = ubicacion;
+        this.nivelExclusividad = nivelExclusividad;
+        this.CondicionClimatica = condicionClimatica;
+        this.esDeTemporada = false;
+        this.mesInicioTemporada = null;
+        this.mesFinTemporada = null;
+        this.empleadosAsignados = new ArrayList<>();
+    }
+
+    // Constructor para atracciones de temporada 
+    public Atraccion(String nombre, int capacidadMax, int empleadosMin, String ubicacion, int nivelExclusividad,
+                     Month mesInicioTemporada, Month mesFinTemporada, String condicionClimatica) {
+        this.nombre = nombre;
+        this.capacidadMax = capacidadMax;
+        this.empleadosMin = empleadosMin;
+        this.ubicacion = ubicacion;
+        this.nivelExclusividad = nivelExclusividad;
+        this.esDeTemporada = true;
+        this.mesInicioTemporada = mesInicioTemporada;
+        this.mesFinTemporada = mesFinTemporada;
+        this.CondicionClimatica = condicionClimatica;
+        this.empleadosAsignados = new ArrayList<>();
+    }
 
 
+    
 	public String getNombre() {
 		return nombre;
 	}
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -47,7 +64,6 @@ public abstract class Atraccion implements LugarTrabajo {
 	public int getCapacidadMax() {
 		return capacidadMax;
 	}
-
 	public void setCapacidadMax(int capacidadMax) {
 		this.capacidadMax = capacidadMax;
 	}
@@ -55,7 +71,6 @@ public abstract class Atraccion implements LugarTrabajo {
 	public int getEmpleadosMin() {
 		return empleadosMin;
 	}
-
 	public void setEmpleadosMin(int empleadosMin) {
 		this.empleadosMin = empleadosMin;
 	}
@@ -63,24 +78,20 @@ public abstract class Atraccion implements LugarTrabajo {
 	public String getUbicacion() {
 		return ubicacion;
 	}
-
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
 
-	public String getNivelEsclusividad() {
-		return nivelEsclusividad;
+	public int getNivelExclusividad() {
+		return nivelExclusividad;
 	}
-
-	public void setNivelEsclusividad(String nivelEsclusividad) {
-		this.nivelEsclusividad = nivelEsclusividad;
+	public void setNivelExclusividad(int nivelExclusividad) {
+		this.nivelExclusividad = nivelExclusividad;
 	}
-
 
 	public List<Empleado> getEmpleadosAsignados() {
 		return empleadosAsignados;
 	}
-
 	public void setEmpleadosAsignados(List<Empleado> empleadosAsignados) {
 		this.empleadosAsignados = empleadosAsignados;
 	}
@@ -88,35 +99,31 @@ public abstract class Atraccion implements LugarTrabajo {
 	public boolean isEsDeTemporada() {
 		return esDeTemporada;
 	}
-
 	public void setEsDeTemporada(boolean esDeTemporada) {
 		this.esDeTemporada = esDeTemporada;
 	}
 
-	public LocalDate getFechaInicioTemporada() {
-		return fechaInicioTemporada;
+	public Month getMesInicioTemporada() {
+		return mesInicioTemporada;
+	}
+	public void setMesInicioTemporada(Month mesInicioTemporada) {
+		this.mesInicioTemporada = mesInicioTemporada;
 	}
 
-	public void setFechaInicioTemporada(LocalDate fechaInicioTemporada) {
-		this.fechaInicioTemporada = fechaInicioTemporada;
+	public Month getMesFinTemporada() {
+		return mesFinTemporada;
 	}
-
-	public LocalDate getFechaFinTemporada() {
-		return fechaFinTemporada;
-	}
-
-	public void setFechaFinTemporada(LocalDate fechaFinTemporada) {
-		this.fechaFinTemporada = fechaFinTemporada;
+	public void setMesFinTemporada(Month mesFinTemporada) {
+		this.mesFinTemporada = mesFinTemporada;
 	}
 
 	public String getCondicionClimatica() {
 		return CondicionClimatica;
 	}
-
 	public void setCondicionClimatica(String condicionClimatica) {
 		CondicionClimatica = condicionClimatica;
 	}
-    
+
 	public boolean tienePersonalSuficiente() {
         return this.empleadosAsignados.size() >= this.empleadosMin;
     }
@@ -128,8 +135,18 @@ public abstract class Atraccion implements LugarTrabajo {
     public boolean estaOperativa(LocalDate fecha, String climaActual) {
         //  Verifica temporada
         if (esDeTemporada) {
-        	if (fecha.isBefore(fechaInicioTemporada) || fecha.isAfter(fechaFinTemporada)) {
-                return false; 
+        	Month mesActual = fecha.getMonth();
+
+            // Temporada dentro de un mismo año
+            if (mesInicioTemporada.compareTo(mesFinTemporada) <= 0) {
+                if (mesActual.compareTo(mesInicioTemporada) < 0 || mesActual.compareTo(mesFinTemporada) > 0) {
+                    return false;
+                }
+            } else {
+                // Temporada que cruza el cambio de año (ej: noviembre a febrero)
+                if (mesActual.compareTo(mesFinTemporada) > 0 && mesActual.compareTo(mesInicioTemporada) < 0) {
+                    return false;
+                }
             }
         }
         //  Verifica clima
@@ -146,7 +163,5 @@ public abstract class Atraccion implements LugarTrabajo {
         return true; 
     
     }
-	
-    
-
 }
+    

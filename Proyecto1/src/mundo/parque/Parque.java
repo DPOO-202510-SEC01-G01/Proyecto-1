@@ -1,6 +1,7 @@
 package parque;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import atracciones.Atraccion;
@@ -19,10 +20,10 @@ public class Parque {
 	public Parque(Map<String, Atraccion> atracciones, Map<String, Espectaculo> espectaculos,
 			Map<String, Usuario> usuarios, Map<String, Tiquete> tiquetes) {
 		super();
-		this.atracciones = atracciones;
-		this.espectaculos = espectaculos;
-		this.usuarios = usuarios;
-		this.tiquetes = tiquetes;
+		this.atracciones = new HashMap<>();
+		this.espectaculos = new HashMap<>();
+		this.usuarios = new HashMap<>();
+		this.tiquetes = new HashMap<>();
 	}
 
 	

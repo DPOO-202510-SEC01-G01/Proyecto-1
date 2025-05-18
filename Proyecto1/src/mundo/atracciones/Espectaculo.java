@@ -2,6 +2,8 @@ package atracciones;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 import usuario.Empleado;
@@ -13,28 +15,44 @@ public class Espectaculo {
 	protected List<LocalDateTime> horarios; // Representa los horarios específicos del espectáculo.
 	protected String ubicacionGeneral; // Aunque no es fija, puede tener una ubicación general o posibles ubicaciones.
 	protected boolean esDeTemporada;
-	protected  LocalDate fechaInicioTemporada; 
-    protected  LocalDate fechaFinTemporada;   
+	protected  Month mesInicioTemporada; 
+    protected  Month mesFinTemporada;   
     protected String CondicionClimatica;
     protected  int empleadosMin;
     protected List<Empleado> empleadosAsignados;
     
     
 	public Espectaculo(String nombre, String descripcion, List<LocalDateTime> horarios, String ubicacionGeneral,
-			boolean esDeTemporada, LocalDate fechaInicioTemporada, LocalDate fechaFinTemporada,
+			boolean esDeTemporada, Month mesInicioTemporada, Month mesFinTemporada,
 			String condicionClimatica, int empleadosMin, List<Empleado> empleadosAsignados) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.horarios = horarios;
 		this.ubicacionGeneral = ubicacionGeneral;
-		this.esDeTemporada = esDeTemporada;
-		this.fechaInicioTemporada = fechaInicioTemporada;
-		this.fechaFinTemporada = fechaFinTemporada;
+		this.esDeTemporada = true;
+		this.mesInicioTemporada = mesInicioTemporada;
+		this.mesFinTemporada = mesFinTemporada;
 		CondicionClimatica = condicionClimatica;
 		this.empleadosMin = empleadosMin;
-		this.empleadosAsignados = empleadosAsignados;
+		this.empleadosAsignados = new ArrayList<>();
 	}
+	
+	public Espectaculo(String nombre, String descripcion, List<LocalDateTime> horarios, String ubicacionGeneral,
+			String condicionClimatica, int empleadosMin, List<Empleado> empleadosAsignados) {
+		super();
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.horarios = horarios;
+		this.ubicacionGeneral = ubicacionGeneral;
+		this.esDeTemporada = false;
+		this.mesInicioTemporada = null;
+		this.mesFinTemporada = null;
+		CondicionClimatica = condicionClimatica;
+		this.empleadosMin = empleadosMin;
+		this.empleadosAsignados = new ArrayList<>();
+	}
+	
 	
 
 	public String getNombre() {
@@ -67,17 +85,17 @@ public class Espectaculo {
 	public void setEsDeTemporada(boolean esDeTemporada) {
 		this.esDeTemporada = esDeTemporada;
 	}
-	public LocalDate getFechaInicioTemporada() {
-		return fechaInicioTemporada;
+	public Month getmesInicioTemporada() {
+		return mesInicioTemporada;
 	}
-	public void setFechaInicioTemporada(LocalDate fechaInicioTemporada) {
-		this.fechaInicioTemporada = fechaInicioTemporada;
+	public void setmesInicioTemporada(Month mesInicioTemporada) {
+		this.mesInicioTemporada = mesInicioTemporada;
 	}
-	public LocalDate getFechaFinTemporada() {
-		return fechaFinTemporada;
+	public Month getmesFinTemporada() {
+		return mesFinTemporada;
 	}
-	public void setFechaFinTemporada(LocalDate fechaFinTemporada) {
-		this.fechaFinTemporada = fechaFinTemporada;
+	public void setmesFinTemporada(Month mesFinTemporada) {
+		this.mesFinTemporada = mesFinTemporada;
 	}
 	public String getCondicionClimatica() {
 		return CondicionClimatica;
@@ -105,8 +123,18 @@ public class Espectaculo {
 	public boolean estaOperativa(LocalDate fecha, String climaActual) {
         //  Verifica temporada
         if (esDeTemporada) {
-        	if (fecha.isBefore(fechaInicioTemporada) || fecha.isAfter(fechaFinTemporada)) {
-                return false; 
+        	Month mesActual = fecha.getMonth();
+
+            // Temporada dentro de un mismo año
+            if (mesInicioTemporada.compareTo(mesFinTemporada) <= 0) {
+                if (mesActual.compareTo(mesInicioTemporada) < 0 || mesActual.compareTo(mesFinTemporada) > 0) {
+                    return false;
+                }
+            } else {
+                // Temporada que cruza el cambio de año (ej: noviembre a febrero)
+                if (mesActual.compareTo(mesFinTemporada) > 0 && mesActual.compareTo(mesInicioTemporada) < 0) {
+                    return false;
+                }
             }
         }
         //  Verifica clima
