@@ -164,4 +164,3 @@ public abstract class Atraccion implements LugarTrabajo {
     
     }
 }
-    
