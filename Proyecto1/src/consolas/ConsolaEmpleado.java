@@ -5,7 +5,7 @@ import persistencia.GuardadorUsuarios;
 
 public class ConsolaEmpleado {
     public static void main(String[] args) {
-        Parque parque = new Parque(null, null, null, null);
+        Parque parque = new Parque();
 
         // Cargar usuarios desde archivo
         CargadorUsuarios.cargarUsuarios("data/usuarios.json", parque);
