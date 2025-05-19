@@ -11,8 +11,10 @@ import usuario.Usuario;
 
 public class CargadorUsuarios {
 
-    public static void cargarUsuarios(String rutaArchivo, Parque parque) {
-        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+    private static final String RUTA_USUARIOS = "data/usuarios.json";
+
+    public static void cargarUsuarios(Parque parque) {
+        try (BufferedReader br = new BufferedReader(new FileReader(RUTA_USUARIOS))) {
             StringBuilder jsonBuilder = new StringBuilder();
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -58,6 +60,7 @@ public class CargadorUsuarios {
         }
     }
 }
+
 
 
 
