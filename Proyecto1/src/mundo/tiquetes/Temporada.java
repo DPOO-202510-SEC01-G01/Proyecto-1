@@ -1,4 +1,5 @@
 package tiquetes;
+
 import java.util.Date;
 
 public class Temporada extends Tiquete {

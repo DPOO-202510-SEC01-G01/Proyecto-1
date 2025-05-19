@@ -1,5 +1,7 @@
 package tiquetes;
+
 import java.util.Date;
+
 
 public class Fastpass extends Tiquete {
     private Date fechaUso;

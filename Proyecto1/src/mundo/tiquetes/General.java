@@ -1,6 +1,4 @@
 package tiquetes;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 public class General extends Tiquete {

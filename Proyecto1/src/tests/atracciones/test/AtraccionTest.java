@@ -2,13 +2,13 @@ package atracciones.test;
 
 
 import atracciones.AtraccionCultural;
+
 import atracciones.AtraccionMecanica;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import usuario.Empleado;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,12 +79,12 @@ public class AtraccionTest {
         // noviembre a febrero es una temporada que cruza el año
         AtraccionCultural culturalTemp = new AtraccionCultural(
                 "Teatro", 10, 1, "Zona C", 1,
-                Month.NOVEMBER, Month.FEBRUARY, "Soleado", 10
+                LocalDate.of(2024, 11, 1), LocalDate.of(2025, 2, 28), "Soleado", 10
         );
 
         culturalTemp.asignarEmpleado(empleado1);
         // Fecha fuera de temporada: junio
-        boolean operativa = culturalTemp.estaOperativa(LocalDate.of(2025, Month.JUNE, 10), "Nublado");
+        boolean operativa = culturalTemp.estaOperativa(LocalDate.of(2025, 6, 10), "Nublado");
         assertFalse(operativa);
     }
 
@@ -92,11 +92,11 @@ public class AtraccionTest {
     public void testAtraccionDeTemporada_DentroDeTemporadaYTodoCorrecto() {
         AtraccionCultural culturalTemp = new AtraccionCultural(
                 "Teatro", 10, 1, "Zona C", 1,
-                Month.MARCH, Month.JULY, "Soleado", 10
+                LocalDate.of(2025, 3, 1), LocalDate.of(2025, 7, 31), "Soleado", 10
         );
 
         culturalTemp.asignarEmpleado(empleado1);
-        boolean operativa = culturalTemp.estaOperativa(LocalDate.of(2025, Month.APRIL, 15), "Nublado");
+        boolean operativa = culturalTemp.estaOperativa(LocalDate.of(2025, 4, 15), "Nublado");
         assertTrue(operativa);
     }
 
@@ -104,7 +104,7 @@ public class AtraccionTest {
     public void testAtraccionDeTemporada_SinPersonal() {
         AtraccionCultural culturalTemp = new AtraccionCultural(
                 "Teatro", 10, 1, "Zona C", 1,
-                Month.JANUARY, Month.DECEMBER, "Soleado", 10
+                LocalDate.of(2025, 1, 1), LocalDate.of(2025, 12, 31), "Soleado", 10
         );
 
         // No se asignan empleados
