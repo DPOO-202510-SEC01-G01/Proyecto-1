@@ -1,9 +1,12 @@
 package usuario;
 import java.time.LocalDate;
+import java.time.Month;
 
 import atracciones.Atraccion;
 import atracciones.Turno;
+import atracciones.AtraccionCultural;
 import parque.Parque;
+
 
 public class Admin extends Usuario {
 	private Parque parque;
@@ -12,17 +15,19 @@ public class Admin extends Usuario {
         parque = this.parque;
     }
 
-    public void crearNuevaAtraccion(String nombre, int capacidadMax, int empleadosMin, String ubicacion, int nivel,
-    		boolean esDeTemporada, String fecha_inicial, String fecha_final, String clima) {
+    public void crearNuevaAtraccionCulturalSinTemporada(String nombre, int capacidadMax, int empleadosMin, String ubicacion, int nivel,
+    		String fecha_inicial, String fecha_final, String clima, int edadMin) {
         System.out.println("Admin " + super.getUserName() + " está creando una atracción...");
-        Atraccion atraccion = new Atraccion(nombre, capacidadMax, empleadosMin, ubicacion, nivel, true, LocalDate.parse(fecha_inicial), 
-        		LocalDate.parse(fecha_final), clima);
+        AtraccionCultural atraccion = new AtraccionCultural(nombre, capacidadMax, empleadosMin, ubicacion, nivel, clima, edadMin);
+        parque.agregarAtraccion(atraccion);
         
         //Pendiente de cambios, cambio en parametros del metodo constructor Atraccion (Sara).
     }
-    public void crearNuevaAtraccion(String nombre, int capacidadMax, int empleadosMin, String ubicacion, int nivel, String clima) {
+    public void crearNuevaAtraccionCulturalDeTemporada(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
+            int nivel, LocalDate fechaInicio, LocalDate fechaFinal, String clima, int edadMin) {
         System.out.println("Admin " + super.getUserName() + " está creando una atracción...");
-        Atraccion atraccion = new Atraccion(nombre, capacidadMax, empleadosMin, ubicacion, nivel, false, clima);
+        Atraccion atraccion = new AtraccionCultural(nombre, capacidadMax, empleadosMin, ubicacion, nivel, fechaInicio,
+        		fechaFinal, clima, edadMin);
         
     }
 
