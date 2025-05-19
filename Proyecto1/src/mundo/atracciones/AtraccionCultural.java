@@ -1,6 +1,7 @@
 package atracciones;
 
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -19,10 +20,10 @@ public class AtraccionCultural extends Atraccion {
 
     // Constructor para atracciones DE temporada
     public AtraccionCultural(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
-                             int nivelExclusividad, Month mesInicio, Month mesFin,
+                             int nivelExclusividad, LocalDate Inicio, LocalDate Fin,
                              String condicionClimatica, int edadMin) {
         super(nombre, capacidadMax, empleadosMin, ubicacion, nivelExclusividad,
-              mesInicio, mesFin, condicionClimatica);
+              Inicio, Fin, condicionClimatica);
         this.edadMin = edadMin;
     }
 	public int getEdadMin() {

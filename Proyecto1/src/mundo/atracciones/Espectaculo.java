@@ -15,15 +15,15 @@ public class Espectaculo {
 	protected List<LocalDateTime> horarios; // Representa los horarios específicos del espectáculo.
 	protected String ubicacionGeneral; // Aunque no es fija, puede tener una ubicación general o posibles ubicaciones.
 	protected boolean esDeTemporada;
-	protected  Month mesInicioTemporada; 
-    protected  Month mesFinTemporada;   
+	protected LocalDate InicioTemporada; 
+    protected LocalDate FinTemporada;   
     protected String CondicionClimatica;
     protected  int empleadosMin;
     protected List<Empleado> empleadosAsignados;
     
     
 	public Espectaculo(String nombre, String descripcion, List<LocalDateTime> horarios, String ubicacionGeneral,
-			boolean esDeTemporada, Month mesInicioTemporada, Month mesFinTemporada,
+			boolean esDeTemporada, LocalDate InicioTemporada, LocalDate FinTemporada,
 			String condicionClimatica, int empleadosMin, List<Empleado> empleadosAsignados) {
 		super();
 		this.nombre = nombre;
@@ -31,8 +31,8 @@ public class Espectaculo {
 		this.horarios = horarios;
 		this.ubicacionGeneral = ubicacionGeneral;
 		this.esDeTemporada = true;
-		this.mesInicioTemporada = mesInicioTemporada;
-		this.mesFinTemporada = mesFinTemporada;
+		this.InicioTemporada = InicioTemporada;
+		this.FinTemporada = FinTemporada;
 		CondicionClimatica = condicionClimatica;
 		this.empleadosMin = empleadosMin;
 		this.empleadosAsignados = new ArrayList<>();
@@ -46,8 +46,8 @@ public class Espectaculo {
 		this.horarios = horarios;
 		this.ubicacionGeneral = ubicacionGeneral;
 		this.esDeTemporada = false;
-		this.mesInicioTemporada = null;
-		this.mesFinTemporada = null;
+		this.InicioTemporada = null;
+		this.FinTemporada = null;
 		CondicionClimatica = condicionClimatica;
 		this.empleadosMin = empleadosMin;
 		this.empleadosAsignados = new ArrayList<>();
@@ -85,17 +85,17 @@ public class Espectaculo {
 	public void setEsDeTemporada(boolean esDeTemporada) {
 		this.esDeTemporada = esDeTemporada;
 	}
-	public Month getmesInicioTemporada() {
-		return mesInicioTemporada;
+	public LocalDate getInicioTemporada() {
+		return InicioTemporada;
 	}
-	public void setmesInicioTemporada(Month mesInicioTemporada) {
-		this.mesInicioTemporada = mesInicioTemporada;
+	public void setInicioTemporada(LocalDate InicioTemporada) {
+		this.InicioTemporada = InicioTemporada;
 	}
-	public Month getmesFinTemporada() {
-		return mesFinTemporada;
+	public LocalDate getFinTemporada() {
+		return FinTemporada;
 	}
-	public void setmesFinTemporada(Month mesFinTemporada) {
-		this.mesFinTemporada = mesFinTemporada;
+	public void setFinTemporada(LocalDate FinTemporada) {
+		this.FinTemporada = FinTemporada;
 	}
 	public String getCondicionClimatica() {
 		return CondicionClimatica;
@@ -121,37 +121,18 @@ public class Espectaculo {
     }
 
 	public boolean estaOperativa(LocalDate fecha, String climaActual) {
-        //  Verifica temporada
         if (esDeTemporada) {
-        	Month mesActual = fecha.getMonth();
-
-            // Temporada dentro de un mismo año
-            if (mesInicioTemporada.compareTo(mesFinTemporada) <= 0) {
-                if (mesActual.compareTo(mesInicioTemporada) < 0 || mesActual.compareTo(mesFinTemporada) > 0) {
-                    return false;
-                }
-            } else {
-                // Temporada que cruza el cambio de año (ej: noviembre a febrero)
-                if (mesActual.compareTo(mesFinTemporada) > 0 && mesActual.compareTo(mesInicioTemporada) < 0) {
-                    return false;
-                }
+            if (fecha.isBefore(InicioTemporada) || fecha.isAfter(FinTemporada)) {
+                return false;
             }
         }
-        //  Verifica clima
-        if (CondicionClimatica == climaActual ) {
-            return false; 
-        }
-        //  Verifica personal (si tiene suficientes empleados asignados para hoy)
-        
-        if (!tienePersonalSuficiente()) {
-             // System.out.println("Atracción " + nombre + " no operativa por falta de personal.");
+
+        if (CondicionClimatica != null && CondicionClimatica.equalsIgnoreCase(climaActual)) {
             return false;
         }
 
-        return true; 
-    
+        return tienePersonalSuficiente();
     }
-    
-    
-
 }
+	
+
