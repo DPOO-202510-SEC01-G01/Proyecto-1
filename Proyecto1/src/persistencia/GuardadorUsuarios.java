@@ -11,8 +11,10 @@ import usuario.Usuario;
 
 public class GuardadorUsuarios {
 
-    public static void guardarUsuarios(String ruta, Parque parque) {
-        try (FileWriter writer = new FileWriter(ruta)) {
+    private static final String RUTA_USUARIOS = "data/usuarios.json";
+
+    public static void guardarUsuarios(Parque parque) {
+        try (FileWriter writer = new FileWriter(RUTA_USUARIOS)) {
             Collection<Usuario> usuarios = parque.getUsuarios();
 
             writer.write("[\n");
@@ -21,7 +23,7 @@ public class GuardadorUsuarios {
                 StringBuilder obj = new StringBuilder();
                 obj.append("  {\n");
                 obj.append("    \"username\": \"" + u.getUserName() + "\",\n");
-                obj.append("    \"password\": \"" + u.autenticar(u.getUserName()) + "\",\n"); // Este método devuelve booleano, ¡NO lo uses aquí!
+                obj.append("    \"password\": \"" + recuperarPassword(u) + "\",\n");
                 obj.append("    \"nombre\": \"" + u.getNombre() + "\",\n");
 
                 if (u instanceof Cliente) {
@@ -45,7 +47,19 @@ public class GuardadorUsuarios {
             e.printStackTrace();
         }
     }
+
+    // Método auxiliar temporal hasta que agregues un getPassword()
+    private static String recuperarPassword(Usuario u) {
+        try {
+            java.lang.reflect.Field f = Usuario.class.getDeclaredField("password");
+            f.setAccessible(true);
+            return (String) f.get(u);
+        } catch (Exception e) {
+            return "error";
+        }
+    }
 }
+
 
 
 

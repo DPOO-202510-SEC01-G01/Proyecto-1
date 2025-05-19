@@ -1,5 +1,7 @@
 package consolas;
+
 import java.util.Scanner;
+
 import parque.Parque;
 import persistencia.CargadorUsuarios;
 import persistencia.GuardadorUsuarios;
@@ -11,9 +13,7 @@ public class ConsolaEmpleado {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Parque parque = new Parque();
-
-
-        CargadorUsuarios.cargarUsuarios("data/usuarios.json", parque);
+        CargadorUsuarios.cargarUsuarios(parque);
 
         System.out.println("=== Sistema de Empleados ===");
         System.out.print("Usuario: ");
@@ -26,6 +26,8 @@ public class ConsolaEmpleado {
 
         if (usuario == null || !(usuario instanceof Empleado)) {
             System.out.println("Acceso denegado. Solo empleados pueden acceder a esta consola.");
+            scanner.close();
+            return;
         }
 
         Empleado empleado = (Empleado) usuario;
@@ -44,7 +46,7 @@ public class ConsolaEmpleado {
             switch (opcion) {
                 case "1":
                     System.out.println("Capacitaciones:");
-                    if (empleado.getCapacitaciones() != null) {
+                    if (empleado.getCapacitaciones() != null && !empleado.getCapacitaciones().isEmpty()) {
                         for (String cap : empleado.getCapacitaciones()) {
                             System.out.println("- " + cap);
                         }
@@ -74,13 +76,12 @@ public class ConsolaEmpleado {
                     break;
             }
         }
-
-        // Guardar usuarios antes de salir
-        GuardadorUsuarios.guardarUsuarios("data/usuarios.json", parque);
+        GuardadorUsuarios.guardarUsuarios(parque);
         System.out.println("Datos guardados. Cerrando sesión...");
         scanner.close();
     }
 }
+
 
 
 
