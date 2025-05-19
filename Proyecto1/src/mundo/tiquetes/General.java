@@ -27,3 +27,8 @@ public class General extends Tiquete {
         return "Tiquete General [" + tipo + "] - " + super.toString();
     }
 }
+    @Override
+    public String toString() {
+        return "Tiquete General [" + tipo + "] - " + super.toString();
+    }
+}

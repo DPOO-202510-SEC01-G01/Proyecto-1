@@ -1,24 +1,33 @@
 package consolas;
 
 import usuario.Cliente;
+import usuario.Empleado;
 import usuario.Usuario;
 import tiquetes.*;
 import parque.Parque;
+import persistencia.CargadorUsuarios;
+import persistencia.GuardadorUsuarios;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.Date;
+
 
 public class ConsolaCliente {
 	
     
 	private static final Scanner scanner = new Scanner(System.in);
-    private static final String CLIENTES_JSON = "clientes.json";
-    private static Map<String, Cliente> clientes = new HashMap<>();
+    private Parque parque;
+    
     private static Cliente clienteActual;
 
     public static void main(String[] args) {
-        cargarClientes();
+    	Parque parque = new Parque();
+    	
+    	 CargadorUsuarios.cargarUsuarios(parque);
 
         while (true) {
             System.out.println("\n--- Menú Principal ---");
@@ -35,7 +44,7 @@ public class ConsolaCliente {
                     }
                 }
                 case 3 -> {
-                    guardarClientes();
+                	 GuardadorUsuarios.guardarUsuarios(parque);
                     System.out.println("Gracias por usar el sistema.");
                     return;
                 }
@@ -59,25 +68,21 @@ public class ConsolaCliente {
 
         Cliente cliente = new Cliente(userName, password, correo);
         clientes.put(userName, cliente);
-        guardarClientes();
         System.out.println("Registro exitoso.");
     }
 
-    private static boolean autenticarCliente() {
+    private static boolean autenticarCliente(Parque parque) {
         System.out.print("Usuario: ");
         String userName = scanner.nextLine();
         System.out.print("Contraseña: ");
         String password = scanner.nextLine();
 
-        Cliente cliente = clientes.get(userName);
-        if (cliente != null && cliente.autenticar(password)) {
-            clienteActual = cliente;
-            System.out.println("Inicio de sesión exitoso.");
-            return true;
-        } else {
-            System.out.println("Usuario o contraseña incorrectos.");
-            return false;
-        }
+        Usuario usuario = parque.iniciarSesion(userName, password);
+
+        if (usuario == null || !(usuario instanceof Empleado)) {
+            System.out.println("Acceso denegado. Solo empleados pueden acceder a esta consola.");
+            scanner.close();
+            return;
     }
 
     private static void menuCliente() {
@@ -114,9 +119,9 @@ public class ConsolaCliente {
         System.out.print("Precio: ");
         int precio = scanner.nextInt(); scanner.nextLine();
 
-        Tiquete tiquete = new General(LocalDate.now(), precio, tipo, nivel);
+        Tiquete tiquete = new General(new Date(), precio, tipo, nivel);
         clienteActual.comprarTiquete(tiquete);
-        guardarClientes();
+        
     }
 
     private static void comprarTiqueteIndividual() {
@@ -127,7 +132,7 @@ public class ConsolaCliente {
 
         Tiquete tiquete = new Individual(new Date(), precio, atraccion);
         clienteActual.comprarTiquete(tiquete);
-        guardarClientes();
+       
     }
 
     private static void comprarFastpass() {
@@ -136,17 +141,40 @@ public class ConsolaCliente {
         System.out.print("Precio: ");
         int precio = scanner.nextInt(); scanner.nextLine();
 
-        Date fecha = java.sql.Date.valueOf(fechaUso);
+        // Formateador para parsear la fecha ingresada
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date fecha = null;
+        try {
+            fecha = formatter.parse(fechaUso);
+        } catch (ParseException e) {
+            System.out.println("Fecha inválida. Usa el formato AAAA-MM-DD.");
+            return;
+        }
+
+        // Crear el tiquete con la fecha de compra actual y la fecha de uso
         Tiquete tiquete = new Fastpass(new Date(), precio, fecha);
         clienteActual.comprarTiquete(tiquete);
-        guardarClientes();
+       
     }
 
     private static void comprarTemporada() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         System.out.print("Fecha inicio (AAAA-MM-DD): ");
-        Date inicio = java.sql.Date.valueOf(scanner.nextLine());
+        Date inicio = null;
+        try {
+            inicio = formatter.parse(scanner.nextLine());
+        } catch (ParseException e) {
+            System.out.println("Fecha de inicio inválida. Usa el formato AAAA-MM-DD.");
+            return;
+        }
         System.out.print("Fecha fin (AAAA-MM-DD): ");
-        Date fin = java.sql.Date.valueOf(scanner.nextLine());
+        Date fin = null;
+        try {
+            fin = formatter.parse(scanner.nextLine());
+        } catch (ParseException e) {
+            System.out.println("Fecha de fin inválida. Usa el formato AAAA-MM-DD.");
+            return;
+        }
         System.out.print("Categoría (Familiar, Oro, Diamante): ");
         String categoria = scanner.nextLine();
         System.out.print("Precio: ");
@@ -154,7 +182,7 @@ public class ConsolaCliente {
 
         Tiquete tiquete = new Temporada(new Date(), precio, inicio, fin, categoria);
         clienteActual.comprarTiquete(tiquete);
-        guardarClientes();
+        
     }
 
     private static void verTiquetes() {
@@ -162,19 +190,5 @@ public class ConsolaCliente {
         clienteActual.getTiquetes().forEach(System.out::println);
     }
 
-    private static void cargarClientes() {
-        try (Reader reader = new FileReader(CLIENTES_JSON)) {
-            clientes = gson.fromJson(reader, new TypeToken<Map<String, Cliente>>(){}.getType());
-        } catch (IOException e) {
-            System.out.println("No se encontraron clientes previos.");
-        }
-    }
-
-    private static void guardarClientes() {
-        try (Writer writer = new FileWriter(CLIENTES_JSON)) {
-            gson.toJson(clientes, writer);
-        } catch (IOException e) {
-            System.out.println("Error guardando los datos de clientes.");
-        }
-    }
 }
+    
