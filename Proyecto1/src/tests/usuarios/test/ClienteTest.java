@@ -2,6 +2,8 @@ package usuarios.test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +16,7 @@ public class ClienteTest {
 	private Cliente cliente;
 	@BeforeEach
 	void setUp() {
-		tiquete = new General("2024-01-01", 1000, "Diamante", 3);
+		tiquete = new General(LocalDate.parse("2024-01-01"), 1000, "Diamante", 3);
 	}
 	@Test
 	void agregarTiqueteTest() {

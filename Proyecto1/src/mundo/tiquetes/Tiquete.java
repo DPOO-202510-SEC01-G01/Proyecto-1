@@ -3,17 +3,17 @@ package tiquetes;
 import java.util.Date;
 
 public abstract class Tiquete {
-    private Date fechaCompra;
+    private LocalDate fechaCompra;
     private boolean usado;
     private int precio;
 
-    public Tiquete(Date fechaCompra, int precio) {
+    public Tiquete(LocalDate fechaCompra, int precio) {
         this.fechaCompra = fechaCompra;
         this.precio = precio;
         this.usado = false;
     }
 
-    public Date getFechaCompra() {
+    public LocalDate getFechaCompra() {
         return fechaCompra;
     }
 

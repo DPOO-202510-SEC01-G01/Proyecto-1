@@ -1,6 +1,7 @@
 package usuario;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 
 import atracciones.Atraccion;
 import atracciones.Turno;
@@ -26,9 +27,16 @@ public class Admin extends Usuario {
     public void crearNuevaAtraccionCulturalDeTemporada(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
             int nivel, LocalDate fechaInicio, LocalDate fechaFinal, String clima, int edadMin) {
         System.out.println("Admin " + super.getUserName() + " está creando una atracción...");
-        Atraccion atraccion = new AtraccionCultural(nombre, capacidadMax, empleadosMin, ubicacion, nivel, fechaInicio,
+        AtraccionCultural atraccion = new AtraccionCultural(nombre, capacidadMax, empleadosMin, ubicacion, nivel, fechaInicio,
         		fechaFinal, clima, edadMin);
         
+    }
+    public void crearNuevaAtraccionMecanidaSinTemporada(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
+            int nivelExclusividad, String condicionClimatica,
+            double alturaMin, double alturaMax, double alturaMinima,
+            int pesoMax, String nivelRiesgo, List<String> restricciones) {
+    	System.out.println("Admin " + super.getUserName() + " está creando una atracción...");
+    	parque.agregarAtraccion(atraccion);
     }
 
     public void asignarTurnoAEmpleado(Empleado empleado, Turno turno /*, ParqueDiversiones parque*/) {

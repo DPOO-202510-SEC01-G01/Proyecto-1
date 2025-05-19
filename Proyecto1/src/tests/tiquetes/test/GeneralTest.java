@@ -28,6 +28,7 @@ public class GeneralTest {
 		assertTrue(oro.getTipo().equals("oro"));
 		assertTrue(diamante.getTipo().equals("diamante"));
 	}
+	@Test
 	void getNivel() {
 		assertTrue(basico.getNivel()==0);
 		assertTrue(familiar.getNivel()==1);

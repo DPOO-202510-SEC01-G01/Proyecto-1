@@ -1,11 +1,12 @@
 package tiquetes;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 public class General extends Tiquete {
     private String tipo; // Básico, Familiar, Oro, Diamante
     private int nivel;
 
-    public General(Date fecha, int precio, String tipo, int nivel) {
+    public General(LocalDate fecha, int precio, String tipo, int nivel) {
         super(fecha, precio);
         this.tipo = tipo;
         this.nivel = nivel;
@@ -21,6 +22,11 @@ public class General extends Tiquete {
     
     
 
+    @Override
+    public String toString() {
+        return "Tiquete General [" + tipo + "] - " + super.toString();
+    }
+}
     @Override
     public String toString() {
         return "Tiquete General [" + tipo + "] - " + super.toString();

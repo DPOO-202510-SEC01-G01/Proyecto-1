@@ -38,12 +38,12 @@ public class AdminTest{
 	}
 	@Test 
 	void crearNuevaAtraccionSinTemporadaTest() {
-		admin.crearNuevaAtraccion("Prueba_atraccion_sin_temporada", 2, 1, "Prueba_ubicacion", 2, "Prueba_clima");
+		admin.crearNuevaAtraccionCulturalSinTemporada("Prueba_atraccion_sin_temporada", 2, 1, "Prueba_ubicacion", 2, "Prueba_clima");
 		assertTrue(parque.existeAtraccion("Prueba_atraccion_no_temporada"));
 	}
 	@Test
-	void crearNuevaAtraccionTemporadaTest() {
-		admin.crearNuevaAtraccion("Prueba_atraccion_temporada", 2, 1, "Prueba_ubicacion", 2, true, "2024-01-01", "2024-12-31", "Prueba_clima");
+	void crearNuevaAtraccionCulturalDeTemporadaTest() {
+		admin.crearNuevaAtraccionCulturalDeTemporada("Prueba_atraccion_temporada", 2, 1, "Prueba_ubicacion", 2, true, "2024-01-01", "2024-12-31", "Prueba_clima");
 		assertTrue(parque.existeAtraccion("Prueba_atraccion_temporada"));
 	}
 	
