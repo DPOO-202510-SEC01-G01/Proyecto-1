@@ -26,7 +26,7 @@ public class Admin extends Usuario {
     public void crearNuevaAtraccionCulturalDeTemporada(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
             int nivel, LocalDate fechaInicio, LocalDate fechaFinal, String clima, int edadMin) {
         System.out.println("Admin " + super.getUserName() + " está creando una atracción...");
-        Atraccion atraccion = new AtraccionCultural(nombre, capacidadMax, empleadosMin, ubicacion, nivel, fechaInicio,
+        AtraccionCultural atraccion = new AtraccionCultural(nombre, capacidadMax, empleadosMin, ubicacion, nivel, fechaInicio,
         		fechaFinal, clima, edadMin);
         
     }
