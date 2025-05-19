@@ -1,0 +1,139 @@
+@startuml Persistencia
+
+class Atraccion {
+  - id: String
+  - tipo: String
+  - nombre: String
+  - ubicacion: String
+  - cupoMaximo: int
+  - empleadosMinimos: int
+  - restricciones: Restricciones
+  - nivelExclusividad: String
+  - climaRestringido: List<String>
+  - nivelRiesgo: String
+
+  + getId(): String
+  + setId(String)
+  + getTipo(): String
+  + setTipo(String)
+  + getNombre(): String
+  + setNombre(String)
+  + getUbicacion(): String
+  + setUbicacion(String)
+  + getCupoMaximo(): int
+  + setCupoMaximo(int)
+  + getEmpleadosMinimos(): int
+  + setEmpleadosMinimos(int)
+  + getRestricciones(): Restricciones
+  + setRestricciones(Restricciones)
+  + getNivelExclusividad(): String
+  + setNivelExclusividad(String)
+  + getClimaRestringido(): List<String>
+  + setClimaRestringido(List<String>)
+  + getNivelRiesgo(): String
+  + setNivelRiesgo(String)
+}
+
+class Lugar {
+  - id: String
+  - tipo: String
+  - nombre: String
+  - empleadosAsignados: List<String>
+
+  + getId(): String
+  + setId(String)
+  + getTipo(): String
+  + setTipo(String)
+  + getNombre(): String
+  + setNombre(String)
+  + getEmpleadosAsignados(): List<String>
+  + setEmpleadosAsignados(List<String>)
+}
+
+class Tiquete {
+  - id: String
+  - tipo: String
+  - precio: float
+  - clienteId: String
+  - utilizado: boolean
+  - atraccionId: String
+  - fechaUso: Date
+  - categoria: String
+  - fechaInicio: Date
+  - fechaFin: Date
+  - tiqueteId: String
+  - precioAdicional: float
+
+  + getId(): String
+  + setId(String)
+  + getTipo(): String
+  + setTipo(String)
+  + getPrecio(): float
+  + setPrecio(float)
+  + getClienteId(): String
+  + setClienteId(String)
+  + isUtilizado(): boolean
+  + setUtilizado(boolean)
+  + getAtraccionId(): String
+  + setAtraccionId(String)
+  + getFechaUso(): Date
+  + setFechaUso(Date)
+  + getCategoria(): String
+  + setCategoria(String)
+  + getFechaInicio(): Date
+  + setFechaInicio(Date)
+  + getFechaFin(): Date
+  + setFechaFin(Date)
+  + getTiqueteId(): String
+  + setTiqueteId(String)
+  + getPrecioAdicional(): float
+  + setPrecioAdicional(float)
+}
+
+class Usuario {
+  - id: String
+  - username: String
+  - password: String
+  - rol: String
+  - privilegios: List<String>
+  - tiquetesComprados: List<String>
+  - empleadoId: String
+
+  + getId(): String
+  + setId(String)
+  + getUsername(): String
+  + setUsername(String)
+  + getPassword(): String
+  + setPassword(String)
+  + getRol(): String
+  + setRol(String)
+  + getPrivilegios(): List<String>
+  + setPrivilegios(List<String>)
+  + getTiquetesComprados(): List<String>
+  + setTiquetesComprados(List<String>)
+  + getEmpleadoId(): String
+  + setEmpleadoId(String)
+}
+
+class Restricciones {
+  - edadMinima: int
+  - alturaMinima: float
+  - pesoMaximo: float
+  - contraindicaciones: List<String>
+
+  + getEdadMinima(): int
+  + setEdadMinima(int)
+  + getAlturaMinima(): float
+  + setAlturaMinima(float)
+  + getPesoMaximo(): float
+  + setPesoMaximo(float)
+  + getContraindicaciones(): List<String>
+  + setContraindicaciones(List<String>)
+}
+
+Usuario "1" --> "*" Tiquete : compra
+Tiquete "1" --> "0..1" Atraccion : usa
+Lugar "*" --> "1" Usuario : empleadosAsignados
+
+@enduml
+
