@@ -1,8 +1,9 @@
 package atracciones;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.time.LocalDate;
-import java.time.Month;
+
 
 import usuario.Empleado;
 import lugares.LugarTrabajo;
@@ -16,8 +17,8 @@ public abstract class Atraccion implements LugarTrabajo {
     protected  int nivelExclusividad; // 0 = Basico, 1=familiar, 2=oro, 3=,diamante
     protected List<Empleado> empleadosAsignados;
     protected  boolean esDeTemporada;
-    protected  Month mesInicioTemporada; 
-    protected  Month mesFinTemporada;   
+    protected  LocalDate InicioTemporada; 
+    protected  LocalDate FinTemporada;   
     protected String CondicionClimatica;
     
     
@@ -32,22 +33,22 @@ public abstract class Atraccion implements LugarTrabajo {
         this.nivelExclusividad = nivelExclusividad;
         this.CondicionClimatica = condicionClimatica;
         this.esDeTemporada = false;
-        this.mesInicioTemporada = null;
-        this.mesFinTemporada = null;
+        this.InicioTemporada = null;
+        this.FinTemporada = null;
         this.empleadosAsignados = new ArrayList<>();
     }
 
     // Constructor para atracciones de temporada 
     public Atraccion(String nombre, int capacidadMax, int empleadosMin, String ubicacion, int nivelExclusividad,
-                     Month mesInicioTemporada, Month mesFinTemporada, String condicionClimatica) {
+    		LocalDate InicioTemporada, LocalDate FinTemporada, String condicionClimatica) {
         this.nombre = nombre;
         this.capacidadMax = capacidadMax;
         this.empleadosMin = empleadosMin;
         this.ubicacion = ubicacion;
         this.nivelExclusividad = nivelExclusividad;
         this.esDeTemporada = true;
-        this.mesInicioTemporada = mesInicioTemporada;
-        this.mesFinTemporada = mesFinTemporada;
+        this.InicioTemporada = InicioTemporada;
+        this.FinTemporada = FinTemporada;
         this.CondicionClimatica = condicionClimatica;
         this.empleadosAsignados = new ArrayList<>();
     }
@@ -103,18 +104,18 @@ public abstract class Atraccion implements LugarTrabajo {
 		this.esDeTemporada = esDeTemporada;
 	}
 
-	public Month getMesInicioTemporada() {
-		return mesInicioTemporada;
+	public LocalDate getInicioTemporada() {
+		return InicioTemporada;
 	}
-	public void setMesInicioTemporada(Month mesInicioTemporada) {
-		this.mesInicioTemporada = mesInicioTemporada;
+	public void setInicioTemporada(LocalDate InicioTemporada) {
+		this.InicioTemporada = InicioTemporada;
 	}
 
-	public Month getMesFinTemporada() {
-		return mesFinTemporada;
+	public LocalDate getFinTemporada() {
+		return FinTemporada;
 	}
-	public void setMesFinTemporada(Month mesFinTemporada) {
-		this.mesFinTemporada = mesFinTemporada;
+	public void setMesFinTemporada(LocalDate mesFinTemporada) {
+		this.FinTemporada = mesFinTemporada;
 	}
 
 	public String getCondicionClimatica() {
@@ -132,35 +133,21 @@ public abstract class Atraccion implements LugarTrabajo {
     /**
      * Verifica si la atracción está operativa en una fecha y condiciones climáticas dadas.
      */
-    public boolean estaOperativa(LocalDate fecha, String climaActual) {
-        //  Verifica temporada
+	
+	
+	///
+	public boolean estaOperativa(LocalDate fecha, String climaActual) {
         if (esDeTemporada) {
-        	Month mesActual = fecha.getMonth();
-
-            // Temporada dentro de un mismo año
-            if (mesInicioTemporada.compareTo(mesFinTemporada) <= 0) {
-                if (mesActual.compareTo(mesInicioTemporada) < 0 || mesActual.compareTo(mesFinTemporada) > 0) {
-                    return false;
-                }
-            } else {
-                // Temporada que cruza el cambio de año (ej: noviembre a febrero)
-                if (mesActual.compareTo(mesFinTemporada) > 0 && mesActual.compareTo(mesInicioTemporada) < 0) {
-                    return false;
-                }
+            if (fecha.isBefore(InicioTemporada) || fecha.isAfter(FinTemporada)) {
+                return false;
             }
         }
-        //  Verifica clima
-        if (CondicionClimatica == climaActual ) {
-            return false; 
-        }
-        //  Verifica personal (si tiene suficientes empleados asignados para hoy)
-        
-        if (!tienePersonalSuficiente()) {
-             // System.out.println("Atracción " + nombre + " no operativa por falta de personal.");
+
+        if (CondicionClimatica != null && CondicionClimatica.equalsIgnoreCase(climaActual)) {
             return false;
         }
 
-        return true; 
-    
+        return tienePersonalSuficiente();
     }
 }
+	

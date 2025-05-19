@@ -1,108 +1,166 @@
 package atracciones.test;
 
-import atracciones.Espectaculo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import usuario.Empleado;
+import atracciones.Espectaculo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EspectaculoTest {
+class EspectaculoTest {
 
-    private Empleado empleado1;
-    private Empleado empleado2;
     private List<LocalDateTime> horarios;
-    private Espectaculo espectaculo;
+    private List<Empleado> empleados;
 
     @BeforeEach
-    public void setUp() {
-        empleado1 = new Empleado("Mario", "101","mario@parque.com","rol");
-        empleado2 = new Empleado("Lucia", "102","lucia@parque.com","rol");
-        horarios = List.of(LocalDateTime.of(2025, Month.JUNE, 15, 17, 0));
+    void setUp() {
+        horarios = Arrays.asList(LocalDateTime.of(2025, Month.JUNE, 1, 15, 0));
+        empleados = Arrays.asList(new Empleado("Juan","123","juan@parque.com","rol"), new Empleado("Ana","456","ana@parque.com","rol"));
+    }
 
-        espectaculo = new Espectaculo(
-                "Show de Magia",
-                "Espectáculo de ilusionismo",
+    @Test
+    void testConstructorConTemporada() {
+        Espectaculo espectaculo = new Espectaculo(
+                "Show Mágico",
+                "Un show de magia",
+                horarios,
+                "Zona Norte",
+                true,
+                LocalDate.of(2025, 5, 1),
+                LocalDate.of(2025, 8, 1),
+                "Lluvia",
+                2,
+                empleados
+        );
+
+        assertTrue(espectaculo.isEsDeTemporada());
+        assertEquals("Show Mágico", espectaculo.getNombre());
+        assertEquals("Zona Norte", espectaculo.getUbicacionGeneral());
+        assertEquals(2, espectaculo.getEmpleadosMin());
+        assertEquals("Lluvia", espectaculo.getCondicionClimatica());
+        assertEquals(0, espectaculo.getEmpleadosAsignados().size()); // El constructor inicializa como nueva lista vacía
+    }
+
+    @Test
+    void testConstructorSinTemporada() {
+        Espectaculo espectaculo = new Espectaculo(
+                "Show de Robots",
+                "Robots en acción",
+                horarios,
+                "Zona Sur",
+                "Viento fuerte",
+                1,
+                empleados
+        );
+
+        assertFalse(espectaculo.isEsDeTemporada());
+        assertNull(espectaculo.getInicioTemporada());
+        assertNull(espectaculo.getFinTemporada());
+    }
+
+    @Test
+    void testTienePersonalSuficiente() {
+        Espectaculo espectaculo = new Espectaculo(
+                "Aventura Musical",
+                "Concierto interactivo",
                 horarios,
                 "Plaza Central",
+                "Tormenta",
+                2,
+                empleados
+        );
+
+        // Asignamos dos empleados
+        espectaculo.setEmpleadosAsignados(empleados);
+        assertTrue(espectaculo.tienePersonalSuficiente());
+
+        
+        espectaculo.setEmpleadosAsignados(Arrays.asList(new Empleado("Carlos","789","carlos@parque.com","rol")));
+        assertFalse(espectaculo.tienePersonalSuficiente());
+    }
+
+    @Test
+    void testEstaOperativa_CondicionesValidas() {
+        Espectaculo espectaculo = new Espectaculo(
+                "Teatro de Sombras",
+                "Espectáculo visual",
+                horarios,
+                "Anfiteatro",
+                true,
+                LocalDate.of(2025, 5, 1),
+                LocalDate.of(2025, 8, 1),
+                "Lluvia",
+                1,
+                empleados
+        );
+
+        espectaculo.setEmpleadosAsignados(empleados);
+        boolean operativa = espectaculo.estaOperativa(LocalDate.of(2025, 6, 15), "Soleado");
+        assertTrue(operativa);
+    }
+
+    @Test
+    void testEstaOperativa_FueraDeTemporada() {
+        Espectaculo espectaculo = new Espectaculo(
+                "Circo de Invierno",
+                "Show de invierno",
+                horarios,
+                "Zona Helada",
+                true,
+                LocalDate.of(2025, 12, 1),
+                LocalDate.of(2026, 2, 28),
+                "Nieve",
+                1,
+                empleados
+        );
+
+        espectaculo.setEmpleadosAsignados(empleados);
+        assertFalse(espectaculo.estaOperativa(LocalDate.of(2025, 10, 15), "Soleado"));
+    }
+
+    @Test
+    void testEstaOperativa_CondicionClimaticaDesfavorable() {
+        Espectaculo espectaculo = new Espectaculo(
+                "Acuático Extremo",
+                "Show de agua",
+                horarios,
+                "Piscina",
                 false,
                 null,
                 null,
-                "Soleado",
-                2,
-                new ArrayList<>()
-        );
-    }
-
-    @Test
-    public void testTienePersonalSuficiente() {
-        espectaculo.getEmpleadosAsignados().add(empleado1);
-        assertFalse(espectaculo.tienePersonalSuficiente());
-
-        espectaculo.getEmpleadosAsignados().add(empleado2);
-        assertTrue(espectaculo.tienePersonalSuficiente());
-    }
-
-    @Test
-    public void testEspectaculoNoDeTemporada_ClimaIncorrecto() {
-        espectaculo.getEmpleadosAsignados().add(empleado1);
-        espectaculo.getEmpleadosAsignados().add(empleado2);
-        boolean operativa = espectaculo.estaOperativa(LocalDate.now(), "Soleado");
-        assertFalse(operativa); // clima igual al configurado => no operativa
-    }
-
-    @Test
-    public void testEspectaculoNoDeTemporada_TodoCorrecto() {
-        espectaculo.setCondicionClimatica("Lluvioso");
-        espectaculo.getEmpleadosAsignados().add(empleado1);
-        espectaculo.getEmpleadosAsignados().add(empleado2);
-        boolean operativa = espectaculo.estaOperativa(LocalDate.of(2025, Month.JUNE, 15), "Soleado");
-        assertTrue(operativa);
-    }
-
-    @Test
-    public void testEspectaculoDeTemporada_FueraDeRango() {
-        Espectaculo espectaculoTemp = new Espectaculo(
-                "Show Invierno",
-                "Navidad y luces",
-                horarios,
-                "Pista de hielo",
-                true,
-                Month.NOVEMBER,
-                Month.FEBRUARY,
-                "Soleado",
+                "Tormenta",
                 1,
-                new ArrayList<>()
+                empleados
         );
 
-        espectaculoTemp.getEmpleadosAsignados().add(empleado1);
-        boolean operativa = espectaculoTemp.estaOperativa(LocalDate.of(2025, Month.JUNE, 10), "Nublado");
-        assertFalse(operativa);
+        espectaculo.setEmpleadosAsignados(empleados);
+        assertFalse(espectaculo.estaOperativa(LocalDate.of(2025, 6, 15), "Tormenta"));
     }
 
     @Test
-    public void testEspectaculoDeTemporada_OperativoCorrecto() {
-        Espectaculo espectaculoTemp = new Espectaculo(
-                "Festival Verano",
-                "Shows musicales",
+    void testEstaOperativa_SinPersonal() {
+        Espectaculo espectaculo = new Espectaculo(
+                "Show de Fuego",
+                "Pirotecnia espectacular",
                 horarios,
-                "Escenario Principal",
-                true,
-                Month.JUNE,
-                Month.AUGUST,
-                "Niebla",
+                "Zona Roja",
+                false,
+                null,
+                null,
+                "Viento fuerte",
                 1,
-                new ArrayList<>()
+                empleados
         );
 
-        espectaculoTemp.getEmpleadosAsignados().add(empleado1);
-        boolean operativa = espectaculoTemp.estaOperativa(LocalDate.of(2025, Month.JULY, 5), "Despejado");
-        assertTrue(operativa);
+        // No hay empleados asignados
+        espectaculo.setEmpleadosAsignados(new ArrayList<>());
+        assertFalse(espectaculo.estaOperativa(LocalDate.of(2025, 7, 10), "Soleado"));
     }
 }

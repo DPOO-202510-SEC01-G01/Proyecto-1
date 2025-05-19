@@ -33,12 +33,12 @@ public class AtraccionMecanica extends Atraccion {
 
     // Constructor para atracciones DE temporada
     public AtraccionMecanica(String nombre, int capacidadMax, int empleadosMin, String ubicacion,
-                             int nivelExclusividad, Month mesInicio, Month mesFin,
+                             int nivelExclusividad, LocalDate Inicio, LocalDate Fin,
                              String condicionClimatica, double alturaMin, double alturaMax,
                              double alturaMinima, int pesoMax, String nivelRiesgo,
                              List<String> restricciones) {
         super(nombre, capacidadMax, empleadosMin, ubicacion, nivelExclusividad,
-              mesInicio, mesFin, condicionClimatica);
+              Inicio, Fin, condicionClimatica);
         this.alturaMin = alturaMin;
         this.alturaMax = alturaMax;
         this.alturaMinima = alturaMinima;
