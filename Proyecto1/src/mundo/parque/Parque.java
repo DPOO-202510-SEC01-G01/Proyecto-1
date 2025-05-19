@@ -17,8 +17,7 @@ public class Parque {
     private final Map<String, Usuario> usuarios;
     private Map<String, Tiquete> tiquetes;
     
-	public Parque(Map<String, Atraccion> atracciones, Map<String, Espectaculo> espectaculos,
-			Map<String, Usuario> usuarios, Map<String, Tiquete> tiquetes) {
+	public Parque() {
 		super();
 		this.atracciones = new HashMap<>();
 		this.espectaculos = new HashMap<>();
